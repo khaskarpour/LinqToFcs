@@ -1,0 +1,23 @@
+﻿<Window x:Class="LinqToFcs.LinqPadDriver.ConnectionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Fcs Connection" Height="135" Width="462.545" WindowStartupLocation="CenterScreen">
+    
+    <StackPanel Margin="7">
+
+        <DockPanel>
+            <Label DockPanel.Dock="Right" Padding="1">
+                <Hyperlink FontSize="14" Click="BrowseFcsFile">Browse...</Hyperlink>
+            </Label>
+            <Label FontSize="14" Padding="0,0,0,1">Path to FCS file:</Label>
+        </DockPanel>
+
+        <TextBox Name="txtAssemblyPath" Margin="0,0,0,6" Text="{Binding CustomTypeInfo.DisplayName}"/>
+
+        <DockPanel LastChildFill="False" Margin="0,10,0,0">
+            <Button Name="btnCancel" DockPanel.Dock="Right" Content="Cancel" Margin="5,0,0,0" Padding="8,2" MinWidth="60" IsCancel="True" TabIndex="2" />
+            <Button Name="btnOK" DockPanel.Dock="Right" Content="OK" Margin="5,0,0,0" Padding="8,2" MinWidth="60" IsDefault="True" TabIndex="1" Click="btnOK_Click" />
+        </DockPanel>
+
+    </StackPanel>
+</Window>
