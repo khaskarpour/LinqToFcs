@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LinqToFcs.Core;
+using System;
 using System.Linq;
-using System.Text;
 
 namespace LinqToFcs.TestConsole
 {
@@ -9,6 +8,48 @@ namespace LinqToFcs.TestConsole
     {
         static void Main(string[] args)
         {
+            using (FcsContext cnx = new FcsContext("TestFile.fcs"))
+            {
+                Console.WriteLine("---------------------------------------");
+
+                foreach (var item in cnx.DataSets.Select((x, index) => new { DataSet = x, Index = index }))
+                {
+                    FcsDataSet dataSet = item.DataSet;
+
+                    Console.WriteLine(string.Format("Header {0}", item.Index + 1));
+
+                    Console.WriteLine(string.Format("   Version = {0}", dataSet.HeaderData.Version));
+                    Console.WriteLine(string.Format("   BeginText = {0}", dataSet.HeaderData.BeginText));
+                    Console.WriteLine(string.Format("   EndText = {0}", dataSet.HeaderData.EndText));
+                    Console.WriteLine(string.Format("   BeginData = {0}", dataSet.HeaderData.BeginData));
+                    Console.WriteLine(string.Format("   EndData = {0}", dataSet.HeaderData.EndData));
+
+                    Console.WriteLine("---------------------------------------");
+                    Console.WriteLine();
+
+                    Console.WriteLine(string.Format("Text {0}", item.Index + 1));
+
+                    Console.WriteLine(string.Format("   Version = {0}", dataSet.TextData.FIL));
+                    Console.WriteLine(string.Format("   BeginText = {0}", dataSet.TextData.EXP));
+                    Console.WriteLine(string.Format("   EndText = {0}", dataSet.TextData.ETIM));
+                    Console.WriteLine(string.Format("   BeginData = {0}", dataSet.TextData.GATE));
+                    Console.WriteLine(string.Format("   EndData = {0}", dataSet.TextData.MODE));
+                    Console.WriteLine(string.Format("   EndData = {0}", dataSet.TextData.PAR));
+                    Console.WriteLine(string.Format("   EndData = {0}", dataSet.TextData.OP));
+                    // any other parameter of text segment, refer to TextData entity
+                }
+
+                var query = cnx.DataSets[0]
+                    .Events
+                    .Where(x => (float)x["Time"] > 10);
+
+                foreach (var i in query)
+                {
+                    Console.WriteLine(i.ToString());
+                }
+
+                Console.ReadLine();
+            }
         }
     }
 }

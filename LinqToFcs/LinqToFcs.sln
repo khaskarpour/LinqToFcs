@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToFcs.TestConsole", "Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToFcs.LinqPadDriver", "LinqToFcs.LinqPadDriver\LinqToFcs.LinqPadDriver.csproj", "{5DFE2846-B4FB-487B-A6B4-BAE69F2256AC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestFile", "TestFile", "{9201E429-B74F-4DFF-9070-4371D8822DEE}"
+	ProjectSection(SolutionItems) = preProject
+		TestFile.fcs = TestFile.fcs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -6,6 +6,7 @@ using LinqToFcs.Core.Serializers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.IO;
 
 namespace LinqToFcs.Core
@@ -13,13 +14,13 @@ namespace LinqToFcs.Core
     [TypeConverter(typeof(FcsDataSetConverter))]
     public class FcsDataSet
     {
-        #region Private Properties
+        #region[      Private Properties      ]
 
         private object _enumerableEventsToWrite;
 
         #endregion
 
-        #region Public Properties
+        #region[       Public Properties      ]
 
         [Category("Stream Properties")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
@@ -77,13 +78,16 @@ namespace LinqToFcs.Core
         [Category("FCS Protocol Properties")]
         public IEvents Events
         {
-            get { return (IEvents)Activator.CreateInstance(
-                typeof(Events<>).MakeGenericType(TextData.DataType), Stream, TextData); }
+            get
+            {
+                return (IEvents)Activator.CreateInstance(
+                    typeof(Events<>).MakeGenericType(TextData.DataType), Stream, TextData);
+            }
         }
             
         #endregion
 
-        #region cntr
+        #region[             cntr             ]
 
         /// <summary>
         /// constructs the object
