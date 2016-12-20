@@ -34,8 +34,8 @@ namespace LinqToFcs.LinqPadDriver
             _cxInfo.DatabaseInfo.AttachFile = true;
             _cxInfo.DatabaseInfo.AttachFileName = dialog.FileName;
             _cxInfo.DatabaseInfo.DbVersion = LinqToFcs.Core.SupportedVersions.FCS3.ToString();
-            _cxInfo.CustomTypeInfo.CustomAssemblyPath = typeof(LinqToFcs.Core.FcsContext).Assembly.Location;
-            _cxInfo.CustomTypeInfo.CustomTypeName = typeof(LinqToFcs.Core.FcsContext).FullName;
+            _cxInfo.CustomTypeInfo.CustomAssemblyPath = typeof(LinqToFcs.Core.FcsReader).Assembly.Location;
+            _cxInfo.CustomTypeInfo.CustomTypeName = typeof(LinqToFcs.Core.FcsReader).FullName;
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)

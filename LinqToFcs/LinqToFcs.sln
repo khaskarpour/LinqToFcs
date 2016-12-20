@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40302.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToFcs.Core", "LinqToFcs.Core\LinqToFcs.Core.csproj", "{8B314DD2-6CC9-4B6E-B8EB-C3FF4C40B467}"
 EndProject
@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestFile", "TestFile", "{92
 	ProjectSection(SolutionItems) = preProject
 		TestFile.fcs = TestFile.fcs
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToFcs.Extensions", "LinqToFcs.Extensions\LinqToFcs.Extensions.csproj", "{7D773032-7F83-463A-B0F1-3D0461058B84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{5DFE2846-B4FB-487B-A6B4-BAE69F2256AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DFE2846-B4FB-487B-A6B4-BAE69F2256AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DFE2846-B4FB-487B-A6B4-BAE69F2256AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D773032-7F83-463A-B0F1-3D0461058B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D773032-7F83-463A-B0F1-3D0461058B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D773032-7F83-463A-B0F1-3D0461058B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D773032-7F83-463A-B0F1-3D0461058B84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

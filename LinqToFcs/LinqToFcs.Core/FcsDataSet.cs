@@ -94,7 +94,7 @@ namespace LinqToFcs.Core
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="startsFrom"></param>
-        public FcsDataSet(Stream stream, long startsFrom)
+        internal FcsDataSet(Stream stream, long startsFrom)
         {
             Stream = stream;
             StartsFrom = startsFrom;

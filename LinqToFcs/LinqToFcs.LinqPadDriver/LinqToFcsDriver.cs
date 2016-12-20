@@ -64,7 +64,7 @@ namespace LinqToFcs.LinqPadDriver
 
         public override List<ExplorerItem> GetSchema(IConnectionInfo cxInfo, Type customType)
         {
-            using (FcsContext context = new FcsContext(cxInfo.DatabaseInfo.AttachFileName))
+            using (FcsReader context = new FcsReader(cxInfo.DatabaseInfo.AttachFileName))
             {
                 List<ExplorerItem> nodes = new List<ExplorerItem>();
 

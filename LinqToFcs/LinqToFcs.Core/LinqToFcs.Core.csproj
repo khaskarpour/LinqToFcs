@@ -72,10 +72,12 @@
     <Compile Include="Enumerators\Events.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
-    <Compile Include="FcsContext.cs" />
     <Compile Include="FcsDataSet.cs" />
     <Compile Include="FcsDataSets.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
+    <Compile Include="FcsReader.cs" />
+    <Compile Include="FcsStreamBase.cs" />
+    <Compile Include="FcsWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializers\AnalysisDataSerializer.cs" />
     <Compile Include="Serializers\EventSerializer.cs" />

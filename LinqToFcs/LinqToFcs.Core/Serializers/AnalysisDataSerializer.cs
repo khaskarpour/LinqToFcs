@@ -18,12 +18,12 @@ namespace LinqToFcs.Core.Serializers
 
             string dataString = Encoding.ASCII.GetString(data);
 
-            var r = dataString.Substring(1)
+            var segmentTerms = dataString.Substring(1)
                 .Split(new[] { "$" }, StringSplitOptions.RemoveEmptyEntries);
 
-            r.DoForEach(x =>
-            {
-                var keywordValue = x.Split(new[] { ConstantValues.Delimiter }, StringSplitOptions.RemoveEmptyEntries);
+            foreach(var term in segmentTerms)
+            { 
+                var keywordValue = term.Split(new[] { ConstantValues.Delimiter }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (keywordValue.Length != 3 && keywordValue.Length != 2)
                 {
@@ -63,7 +63,7 @@ namespace LinqToFcs.Core.Serializers
                     var fixedPropName = string.Format("CSn{0}", keywordValue[0].EndsWith("Name") ? "Name" : "NUM");
                     SetProperty(analysisData.CellSubsets[parIndex], fixedPropName, value);
                 }
-            });
+            }
 
             return analysisData;
         }

@@ -8,7 +8,7 @@ namespace LinqToFcs.TestConsole
     {
         static void Main(string[] args)
         {
-            using (FcsContext cnx = new FcsContext("TestFile.fcs"))
+            using (FcsReader cnx = new FcsReader("TestFile.fcs"))
             {
                 Console.WriteLine("---------------------------------------");
 
