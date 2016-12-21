@@ -8,18 +8,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.IO;
+using System.Reflection;
 
 namespace LinqToFcs.Core
 {
     [TypeConverter(typeof(FcsDataSetConverter))]
     public class FcsDataSet
     {
-        #region[      Private Properties      ]
-
-        private object _enumerableEventsToWrite;
-
-        #endregion
-
         #region[       Public Properties      ]
 
         [Category("Stream Properties")]
@@ -28,7 +23,7 @@ namespace LinqToFcs.Core
         public Stream Stream
         {
             get;
-            private set;
+            internal protected set;
         }
 
         [Category("Stream Properties")]
@@ -53,7 +48,7 @@ namespace LinqToFcs.Core
         public HeaderData HeaderData
         {
             get;
-            internal protected set;
+            private set;
         }
 
         [DisplayName("Text Data")]
@@ -62,7 +57,7 @@ namespace LinqToFcs.Core
         public TextData TextData
         {
             get;
-            internal set;
+            private set;
         }
 
         [DisplayName("Analysis Data")]
@@ -78,11 +73,8 @@ namespace LinqToFcs.Core
         [Category("FCS Protocol Properties")]
         public IEvents Events
         {
-            get
-            {
-                return (IEvents)Activator.CreateInstance(
-                    typeof(Events<>).MakeGenericType(TextData.DataType), Stream, TextData);
-            }
+            get;
+            private set;
         }
             
         #endregion
@@ -100,16 +92,38 @@ namespace LinqToFcs.Core
             StartsFrom = startsFrom;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="textData"></param>
+        /// <param name="events"></param>
+        public FcsDataSet(TextData textData, IEvents events)
+        {
+            TextData = textData;
+            HeaderData = new HeaderData();
+            Events = events;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="events"></param>
+        public FcsDataSet(IEvents events)
+        {
+            TextData = new TextData();
+            HeaderData = new HeaderData();
+            Events = events;
+        }
+
         #endregion
 
         #region[       Writing Methods        ]
 
-        public void SaveChanges<TEvent>(IEnumerable<FcsEvent<TEvent>> events)
-            where TEvent :  struct
+        public void Write()
         {
             DataValidation();
 
-            WriteDataSegment(events);
+            WriteDataSegment();
             WriteTextSegment();
             WriteHeaderSegment();
         }
@@ -121,7 +135,7 @@ namespace LinqToFcs.Core
                 throw new NullReferenceException("Text segment data can not be null");
             }
 
-            if (_enumerableEventsToWrite == null)
+            if (Events == null)
             {
                 throw new NullReferenceException("Data segment events can not be null");
             }
@@ -147,10 +161,21 @@ namespace LinqToFcs.Core
             HeaderData.EndText = HeaderData.BeginText + textData.Length;
         }
 
-        private void WriteDataSegment<TEvent>(IEnumerable<FcsEvent<TEvent>> events)
+        /// <summary>
+        /// 
+        /// </summary>
+        private void WriteDataSegment()
+        {
+            typeof(FcsDataSet)
+                .GetMethod("GenericWriteDataSegment")
+                .MakeGenericMethod(TextData.DataType)
+                .Invoke(this, null);
+        }
+
+        public void GenericWriteDataSegment<TEvent>()
             where TEvent : struct
         {
-            var eventSerializer = SerializerBase<FcsEvent<TEvent>>.Builder(TextData);
+            var eventSerializer = SerializerBase<FcsEvent<TEvent>>.Builder(TextData.Parameters);
 
             HeaderData.BeginText = StartsFrom + ConstantValues.HeaderLength;
 
@@ -164,7 +189,7 @@ namespace LinqToFcs.Core
             TextData.BeginData = HeaderData.BeginText + textData.Length + 30;
             Stream.MoveTo(TextData.BeginData);
 
-            foreach (FcsEvent<TEvent> ev in events)
+            foreach (FcsEvent<TEvent> ev in Events)
             {
                 byte[] eventData = eventSerializer.Serialize(ev);
                 Stream.Write(eventData, 0, eventData.Length);
@@ -175,38 +200,9 @@ namespace LinqToFcs.Core
             TextData.EndData = (int)Stream.Position;
         }
 
-        public void SetEvents<TResult>(IEnumerable<FcsEvent<TResult>> events)
-            where TResult : struct
-        {
-            if (typeof(TResult) != TextData.DataType)
-            {
-                throw new NotSupportedException(string.Format("{0} events are not in this dataset", typeof(TResult)));
-            }
-
-            Type genericType = typeof(Events<>).MakeGenericType(typeof(TResult));
-            _enumerableEventsToWrite = Activator.CreateInstance(genericType, events.GetEnumerator());
-        }
-
         #endregion
 
         #region[       Reading Methods        ]
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <returns></returns>
-        public IEnumerable<FcsEvent<TResult>> GetEvents<TResult>()
-            where TResult : struct
-        {
-            if (typeof(TResult) != TextData.DataType)
-            {
-                throw new NotSupportedException(string.Format("{0} events are not in this dataset", typeof(TResult)));
-            }
-
-            return (Events<TResult>)Activator.CreateInstance(
-                typeof(Events<>).MakeGenericType(TextData.DataType), Stream, TextData);
-        }
 
         /// <summary>
         /// reads the dataset
@@ -218,8 +214,10 @@ namespace LinqToFcs.Core
             TextData = ReadTextSegment();
 
             AnalysisData = ReadAnalysisSegment();
-
+            
             EndsTo = (HeaderData.EndAnalysis != 0 ? HeaderData.EndAnalysis : TextData.EndData);
+
+            Events = ReadDataSegment();
         }
 
         /// <summary>
@@ -244,6 +242,15 @@ namespace LinqToFcs.Core
 
             return SerializerBase<TextData>.Builder()
                 .Deserialize(dataBytes);
+        }
+
+        /// <summary>
+        /// Reads data segment of data set.
+        /// </summary>
+        protected virtual IEvents ReadDataSegment()
+        {
+            return (IEvents)Activator.CreateInstance(
+                typeof(Events<>).MakeGenericType(TextData.DataType), Stream, TextData);
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace LinqToFcs.Core.Entities
 {
@@ -24,6 +25,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specify the short name of parameter PnN")]
+        [DataMember]
         public string PnN
         {
             get;
@@ -35,6 +37,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies number of parameter bits (PnB)")]
+        [DataMember]
         public int PnB
         {
             get;
@@ -46,6 +49,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("pecifies whether linear or logarithmicamplifiers were used for parameter number (PnE)")]
+        [DataMember]
         public string PnE
         {
             get;
@@ -57,6 +61,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies whether linear or logarithmic amplifiers were used for gating parameter number (GnE)")]
+        [DataMember]
         public string GnE
         {
             get;
@@ -68,6 +73,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("the optical filter that was used for the light reaching the detector for parameter (PnF)")]
+        [DataMember]
         public string PnF
         {
             get;
@@ -79,6 +85,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies the optical filter thatwas used for the light reaching the detector for gating parameter (GnF)")]
+        [DataMember]
         public string GnF
         {
             get;
@@ -90,6 +97,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies the gain that was used to amplify the signal for parameter (PnG)")]
+        [DataMember]
         public float PnG
         {
             get;
@@ -101,6 +109,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies the excitation wavelength (PnL)")]
+        [DataMember]
         public float PnL
         {
             get;
@@ -112,6 +121,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies a short name for gating parameter number")]
+        [DataMember]
         public string GnN
         {
             get;
@@ -123,6 +133,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies the excitation power PnO")]
+        [DataMember]
         public float PnO
         {
             get;
@@ -134,6 +145,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("amount of light collected by the detectorfor parameter number n expressed as a percentage of the lightemitted by a fluorescent object.")]
+        [DataMember]
         public float PnP
         {
             get;
@@ -145,6 +157,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("The amount of light collected by the detectorfor gating parameter number n1 expressed as a percentage of thelight emitted by a fluorescent object.")]
+        [DataMember]
         public float GnP
         {
             get;
@@ -156,6 +169,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies the maximum range")]
+        [DataMember]
         public float PnR
         {
             get;
@@ -167,6 +181,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies the range")]
+        [DataMember]
         public float GnR
         {
             get;
@@ -178,6 +193,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies a long name to be used as an axis label in a plot of parameter")]
+        [DataMember]
         public string PnS
         {
             get;
@@ -189,6 +205,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies a longer name for gating parameter")]
+        [DataMember]
         public string GnS
         {
             get;
@@ -200,6 +217,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies the detector type forparameter")]
+        [DataMember]
         public string PnT
         {
             get;
@@ -211,6 +229,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies the detector type forgating parameter")]
+        [DataMember]
         public string GnT
         {
             get;
@@ -222,6 +241,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies the detector bias voltage")]
+        [DataMember]
         public float PnV
         {
             get;
@@ -233,6 +253,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Text Segment Properties")]
         [Description("specifies the detector bias voltagefor gating parameter")]
+        [DataMember]
         public float GnV
         {
             get;
@@ -277,6 +298,7 @@ namespace LinqToFcs.Core.Entities
         {
             return new ParameterData
             {
+                Index = Index,
                 GnE = GnE,
                 GnF = GnF,
                 GnN = GnN,

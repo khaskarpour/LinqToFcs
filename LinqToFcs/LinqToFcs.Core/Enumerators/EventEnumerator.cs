@@ -40,6 +40,10 @@ namespace LinqToFcs.Core.Enumerators
 
         #region Public Methods
 
+        /// <summary>
+        /// Moves position to the next event.
+        /// </summary>
+        /// <returns></returns>
         public bool MoveNext()
         {
             if (_stream.Position > _textData.EndData)
@@ -58,6 +62,9 @@ namespace LinqToFcs.Core.Enumerators
             return true;
         }
 
+        /// <summary>
+        /// Resets the position to the begining.
+        /// </summary>
         public void Reset()
         {
             _stream.MoveTo(_textData.BeginData);
@@ -71,6 +78,11 @@ namespace LinqToFcs.Core.Enumerators
 
         #region cntr
 
+        /// <summary>
+        /// Constructs the object.
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="textData"></param>
         public EventEnumerator(Stream stream, TextData textData)
         {
             _textData = textData;

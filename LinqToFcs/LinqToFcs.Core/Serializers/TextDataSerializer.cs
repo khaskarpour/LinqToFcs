@@ -1,6 +1,8 @@
 ﻿using LinqToFcs.Core.Entities;
+using LinqToFcs.Core.Extensions;
 using System;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -39,30 +41,23 @@ namespace LinqToFcs.Core.Serializers
                 }
 
                 string keyword = textSegmentTerms[i].Substring(1);
-
                 string value = textSegmentTerms[i + 1];
 
-                var propertyInfo = textData.GetType()
+                var propertyInfo = textData
+                    .GetType()
                     .GetProperties()
                     .FirstOrDefault(y => string.Equals(y.Name, keyword, StringComparison.CurrentCultureIgnoreCase));
 
                 if (propertyInfo != null)
                 {
-                    if (propertyInfo.PropertyType.IsEnum)
-                    {
-                        propertyInfo.SetValue(textData, Enum.ToObject(propertyInfo.PropertyType, value[0]), null);
-                    }
-                    else
-                    {
-                        var typeConverter = GetTypeConverter(propertyInfo);
+                    var typeConverter = GetTypeConverter(propertyInfo);
 
-                        if (typeConverter == null)
-                        {
-                            continue;
-                        }
-
-                        propertyInfo.SetValue(textData, typeConverter.ConvertFrom(value), null);
+                    if (typeConverter == null)
+                    {
+                        continue;
                     }
+
+                    propertyInfo.SetValue(textData, typeConverter.ConvertFrom(value), null);
                 }
                 else if (Regex.Match(keyword, textSegmentReg).Success)
                 {
@@ -87,25 +82,47 @@ namespace LinqToFcs.Core.Serializers
             return textData;
         }
 
+        private string SerialzeParameter(ParameterData parameter)
+        {
+            return string.Concat(
+                        parameter
+                        .GetType()
+                        .GetProperties()
+                        .Where(x => x.HasAnyAttribute<DataMemberAttribute>(true) && x.GetValue(parameter, null) != null)
+                        .Select(x => string.Format("${0}{1}{2}{3}{4}{5}", x.Name.ToUpper()[0], parameter.Index + 1, x.Name.ToUpper().Last(), ConstantValues.Delimiter, x.GetValue(parameter, null), ConstantValues.Delimiter)));
+        }
+
         public override byte[] Serialize(TextData entity, params object[] args)
         {
             //TODO: this code only convertes object to string without refering to custom formatting
-            var textString = string.Concat(
-                entity.GetType()
-                .GetProperties()
-                .Select(x => string.Format("${0}{1}{2}", x.Name, ConstantValues.Delimiter, x.GetValue(entity, null))));
+            string parametersString = string.Concat(
+                entity
+                .Parameters
+                .Select(parameter => SerialzeParameter(parameter)));
 
-            string parametersString = string.Concat(entity.Parameters
-                .Select((parameter, index) =>
-                    string.Concat(
-                        parameter.GetType()
-                        .BaseType
-                        .GetProperties()
-                        .Select(y => string.Format("${0}{1}{2}{3}{4}", y.Name[0], index + 1, y.Name.Last(), ConstantValues.Delimiter, y.GetValue(parameter, null))))));
+            var textDataProperties =
+                entity
+                    .GetType()
+                    .GetProperties()
+                    .Where(x => x.HasAnyAttribute<DataMemberAttribute>(true) && x.GetValue(entity, null) != null);
 
-            var textToWrite = string.Format("{0}{1}{2}{3}", ConstantValues.Delimiter, textString, ConstantValues.Delimiter, parametersString);
+            StringBuilder textStringBuilder = new StringBuilder(ConstantValues.Delimiter.ToString());
 
-            return Encoding.ASCII.GetBytes(textToWrite);
+            foreach (var propertyInfo in textDataProperties)
+            {
+                var typeConverter = GetTypeConverter(propertyInfo);
+
+                if (typeConverter == null)
+                {
+                    continue;
+                }
+
+                object value = propertyInfo.GetValue(entity, null);
+
+                textStringBuilder.AppendFormat("${0}{1}{2}{3}", propertyInfo.Name.ToUpper(), ConstantValues.Delimiter, typeConverter.ConvertTo(value, typeof(string)), ConstantValues.Delimiter);
+            }
+
+            return Encoding.ASCII.GetBytes(string.Format("{0}{1}", textStringBuilder.ToString(), parametersString));
         }
     }
 }

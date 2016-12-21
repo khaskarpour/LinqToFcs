@@ -18,9 +18,15 @@ namespace LinqToFcs.Core
         /// 
         /// </summary>
         /// <param name="dataSets"></param>
-        public void Save(FcsDataSets dataSets)
+        public void Write(FcsDataSets dataSets)
         {
+            DataSets.AddRange(dataSets);
 
+            for (int i = 0; i < dataSets.Count; ++i)
+            {
+                DataSets[i].Stream = this.Stream;
+                dataSets[i].Write();
+            }
         }
     }
 }

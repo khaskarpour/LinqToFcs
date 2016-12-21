@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace LinqToFcs.Core.Entities
 {
@@ -17,6 +18,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Data Segment Properties")]
         [Description("Data segment starts from (BEGINANALYSIS)")]
+        [DataMember]
         public long BeginAnalysis
         {
             get;
@@ -28,6 +30,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Data Segment Properties")]
         [Description("Data segment ends to (ENDANALYSIS)")]
+        [DataMember]
         public long EndAnalysis
         {
             get;
@@ -39,6 +42,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Data Segment Properties")]
         [Description("Data segment starts from (BEGINDATA)")]
+        [DataMember]
         public long BeginData
         {
             get;
@@ -50,6 +54,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Data Segment Properties")]
         [Description("Data segment ends to (ENDDATA)")]
+        [DataMember]
         public long EndData
         {
             get;
@@ -61,6 +66,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Suplementary Text Segment Properties")]
         [Description("Data segment starts from (BEGINSTEXT)")]
+        [DataMember]
         public long BeginSText
         {
             get;
@@ -72,6 +78,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("Suplementary Text Segment Properties")]
         [Description("Data segment ends to (ENDSTEXT)")]
+        [DataMember]
         public long EndSText
         {
             get;
@@ -83,6 +90,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("Investigator's name (EXP)")]
+        [DataMember]
         public string EXP
         {
             get;
@@ -94,6 +102,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("Begining time of acquisition (BTIM)")]
+        [DataMember]
         public TimeSpan BTIM
         {
             get;
@@ -105,6 +114,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("Ending time of acquisition (ETIM)")]
+        [DataMember]
         public TimeSpan ETIM
         {
             get;
@@ -116,6 +126,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("Data file name (FIL)")]
+        [DataMember]
         public string FIL
         {
             get;
@@ -127,6 +138,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("Comment of investigator in file (COM)")]
+        [DataMember]
         public string COM
         {
             get;
@@ -138,6 +150,8 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("Data segment's mode (MODE)")]
+        [DataMember]
+        [CustomConverter(typeof(DataSegmentModesConverter))]
         public DataSegmentModes MODE
         {
             get;
@@ -150,6 +164,7 @@ namespace LinqToFcs.Core.Entities
         [Category("General Properties")]
         [Description("Data type of events in Data segment (DATATYPE)")]
         [CustomConverter(typeof(DataTypesTypeConverter))]
+        [DataMember]
         public Type DataType
         {
             get;
@@ -161,6 +176,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("Number of parameters in an event (PAR)")]
+        [DataMember]
         public int PAR
         {
             get;
@@ -172,6 +188,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("total number of events (TOT)")]
+        [DataMember]
         public int TOT
         {
             get;
@@ -183,6 +200,8 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("date of data set acquisition (DATE)")]
+        [DataMember]
+        [CustomConverter(typeof(DateTimeTypeConverter))]
         public DateTime Date
         {
             get;
@@ -194,6 +213,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("date of data set acquisition (DATE)")]
+        [DataMember]
         public int GATE
         {
             get;
@@ -205,6 +225,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("operation on subset data (GATING)")]
+        [DataMember]
         public string GATING
         {
             get;
@@ -216,6 +237,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("number of lost events because of electronic failures (ABRT)")]
+        [DataMember]
         public int ABRT
         {
             get;
@@ -227,6 +249,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("number of lost events because of aquisition software was busy (LOST)")]
+        [DataMember]
         public int LOST
         {
             get;
@@ -239,6 +262,7 @@ namespace LinqToFcs.Core.Entities
         [Category("General Properties")]
         [Description("byte order of each parameter value (BYTEORD)")]
         [CustomConverter(typeof(ByteOrderTypeConverter))]
+        [DataMember]
         public byte[] BYTEORD
         {
             get;
@@ -261,6 +285,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("data set fluorescence compensation matrix (COMP)")]
+        [DataMember]
         public string COMP
         {
             get;
@@ -294,6 +319,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("flow cytometer used for the data (CYT)")]
+        [DataMember]
         public string CYT
         {
             get;
@@ -305,6 +331,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("Flow cytometer serial number.")]
+        [DataMember]
         public string CYTSN
         {
             get;
@@ -316,6 +343,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("institution (INST)")]
+        [DataMember]
         public string INST
         {
             get;
@@ -327,6 +355,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("next dataset starts from (NEXTDATA)")]
+        [DataMember]
         public long NextData
         {
             get;
@@ -338,6 +367,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("cytometer operator (OP)")]
+        [DataMember]
         public string OP
         {
             get;
@@ -349,6 +379,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("Project Name (PROJ)")]
+        [DataMember]
         public string PROJ
         {
             get;
@@ -360,6 +391,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("pecifies specimen number (SMNO)")]
+        [DataMember]
         public string SMNO
         {
             get;
@@ -371,6 +403,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("specifies source of specimen (SRC)")]
+        [DataMember]
         public string SRC
         {
             get;
@@ -382,6 +415,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("specifies aquisition computer operating system (SYS)")]
+        [DataMember]
         public string SYS
         {
             get;
@@ -393,6 +427,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("specifies acquisition time steps (TIMESTEP)")]
+        [DataMember]
         public float TIMESTEP
         {
             get;
@@ -404,6 +439,7 @@ namespace LinqToFcs.Core.Entities
         /// </summary>
         [Category("General Properties")]
         [Description("specifies Trigger parameter (TR)")]
+        [DataMember]
         public string TR
         {
             get;

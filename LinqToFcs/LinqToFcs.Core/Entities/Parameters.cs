@@ -21,6 +21,22 @@ namespace LinqToFcs.Core.Entities
         /// <summary>
         /// 
         /// </summary>
+        public Parameters()
+        {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameters"></param>
+        public Parameters(IEnumerable<ParameterData> parameters)
+            :base(parameters)
+        {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="pars2"></param>
         /// <returns></returns>
         protected bool Equals(Parameters pars2)
@@ -65,9 +81,9 @@ namespace LinqToFcs.Core.Entities
         /// <returns></returns>
         public object Clone()
         {
-            return this
+            return new Parameters(this
                 .Select(x => (ParameterData)x.Clone())
-                .ToList();
+                .ToList());
         }
 
         #region ICustomTypeDescriptor implementation
